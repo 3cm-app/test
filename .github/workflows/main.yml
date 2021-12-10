@@ -1,14 +1,30 @@
 name: line message
 on: [push]
 jobs:
-
   build:
     name: Build
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
-    - uses: ufoo68/line-push-message@v1.4
-      with:
-        user-id: ${{ secrets.LINE_ROOM_ID }}
-        message: 'test'
-        channel-access-token: ${{ secrets.LINE_CHANNEL_ACCESS_TOKEN }}t.
+    - uses: up9cloud/action-notify@master
+      if: cancelled() == false
+      env:
+        GITHUB_JOB_STATUS: ${{ job.status }}
+        LINE_CHANNEL_ACCESS_TOKEN: ${{ secrets.LINE_CHANNEL_ACCESS_TOKEN }}
+        LINE_ROOM_ID: ${{ secrets.LINE_ROOM_ID }}
+        CUSTOM_SCRIPT: |
+          curl -v -X POST https://api.line.me/v2/bot/message/push \
+          -H 'Content-Type: application/json' \
+          -H 'Authorization: Bearer ${LINE_CHANNEL_ACCESS_TOKEN}' \
+          -d '{
+              "to": "${LINE_ROOM_ID}",
+              "messages":[
+                  {
+                      "type":"text",
+                      "text":"test :)"
+                  }
+              ]
+          }'
+      
+      
+   
