@@ -11,6 +11,6 @@ jobs:
       uses: appleboy/line-action@master
       with:
         secret: ${{ secrets.LINE_CHANNEL_SECRET }}
-        #token: ${{ secrets.LINE_CHANNEL_ACCESS_TOKEN }}
+        token: ${{ secrets.LINE_CHANNEL_ACCESS_TOKEN }}
         room: ${{ secrets.LINE_ROOM_ID }}
         args: line message from GitHub Actions ${{ github.event_name }} event.
