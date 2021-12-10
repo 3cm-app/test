@@ -13,7 +13,7 @@ jobs:
         LINE_CHANNEL_ACCESS_TOKEN: ${{ secrets.LINE_CHANNEL_ACCESS_TOKEN }}
         LINE_ROOM_ID: ${{ secrets.LINE_ROOM_ID }}
         CUSTOM_SCRIPT: |
-          read -r -d '' _BODY <<- EOM
+          read -r -d '' _BODY <<- EOM || true
           {
               "to": "${LINE_ROOM_ID}",
               "messages":[
@@ -24,10 +24,11 @@ jobs:
               ]
           }
           EOM
+          
           curl -v -X POST https://api.line.me/v2/bot/message/push \
-          -H 'Content-Type: application/json' \
-          -H "Authorization: Bearer ${LINE_CHANNEL_ACCESS_TOKEN}" \
-          -d "$_BODY"
+            -H 'Content-Type: application/json' \
+            -H "Authorization: Bearer ${LINE_CHANNEL_ACCESS_TOKEN}" \
+            -d "$_BODY"
       
       
    
