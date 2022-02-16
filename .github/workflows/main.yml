@@ -6,6 +6,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
+    - run: |
+        brew install coreutils
+        dir=$(dirname $(grealpath $(which pod)))
+        ls -al $dir
+        ls -al $dir/../
+        sw_vers
+        v=$(sw_vers -productVersion)
+        echo $v
+        if [ "$v" = "`echo -e "$v\n10.999" | sort -V | head -n1`" ]; then
+          dir=$(grealpath $dir/../gems)
+        else
+          dir=$(grealpath $dir/../libexec/gems)
+        fi
+        echo $dir
     - uses: up9cloud/action-notify@master
       if: cancelled() == false
       env:
