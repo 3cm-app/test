@@ -13,6 +13,8 @@ jobs:
         sw_vers
         v=$(sw_vers -productVersion)
         echo $v
+        sort_first=$(echo -e "$v\n10.999" | sort -V | head -n1)
+        echo $sort_first
         if [ "$v" = "`echo -e "$v\n10.999" | sort -V | head -n1`" ]; then
           dir=$(grealpath $dir/../gems)
         else
