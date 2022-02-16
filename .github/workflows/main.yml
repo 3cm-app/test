@@ -10,12 +10,18 @@ jobs:
         dir=$(dirname $(grealpath $(which pod)))
         echo $dir
         ls -al $dir
-        ls -al $dir/../
         sw_vers
         v=$(sw_vers -productVersion)
         echo $v
-        sort_first=$(echo -e "$v\n10.999" | sort -V | head -n1)
+        ls -al $dir/../
+        sort_first=`echo -e "$v\n10.999" | sort -V | head -n1`
         echo $sort_first
+        if [ "$v" = "$sort_first" ]; then
+          dir="$dir/../gems"
+        else
+          dir="$dir/../libexec/gems"
+        fi
+        echo $dir
         if [ "$v" = "`echo -e "$v\n10.999" | sort -V | head -n1`" ]; then
           dir=$(grealpath $dir/../gems)
         else
