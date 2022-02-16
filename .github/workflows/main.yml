@@ -1,11 +1,10 @@
 name: line message
 on: [push]
 jobs:
-  build:
-    name: Build
-    runs-on: ubuntu-latest
+  mac:
+    name: on latest mac
+    runs-on: macos-latest
     steps:
-    - uses: actions/checkout@master
     - run: |
         brew install coreutils
         dir=$(dirname $(grealpath $(which pod)))
@@ -20,6 +19,11 @@ jobs:
           dir=$(grealpath $dir/../libexec/gems)
         fi
         echo $dir
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
     - uses: up9cloud/action-notify@master
       if: cancelled() == false
       env:
